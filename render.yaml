@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: codeleet-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:flask_app --workers 1 --threads 4 --bind 0.0.0.0:$PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      # Values marked sync: false are entered in the Render dashboard, never committed
+      - key: SLACK_BOT_TOKEN
+        sync: false
+      - key: SLACK_SIGNING_SECRET
+        sync: false
+      - key: LEET_CHANNEL_ID
+        sync: false
+      - key: ADMIN_SLACK_IDS
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CRON_SECRET
+        generateValue: true
